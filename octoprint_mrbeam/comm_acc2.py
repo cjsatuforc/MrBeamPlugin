@@ -625,6 +625,10 @@ class MachineCom(object):
 		if "EEPROM read fail" in line:
 			self._logger.debug("_handle_error_message() Ignoring this error message: '%s'", line)
 			return
+		if "Invalid gcode ID:24" in line:
+			self._logger.warn("ANDYTEST _handle_error_message() gcode ID:24: %s", line)
+			self._logger.dump_terminal_buffer(level=logging.ERROR)
+			return
 		self._logger.error("_handle_error(): %s", line)
 		self._errorValue = line
 		eventManager().fire(OctoPrintEvents.ERROR, {"error": self.getErrorString()})
